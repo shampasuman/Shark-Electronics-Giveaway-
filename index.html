@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="🦈 Shark Electronics - FREE Gift Giveaway! 🎁">
+    <meta property="og:description" content="Apnar bhaggo porikhya korun! Form ti fill-up korun ebong jitun akorshoniyo upohar!">
+    <meta property="og:image" content="banner.jpg">
+    <meta property="og:type" content="website">
+
+    <title>Shark Electronics - FREE Gift Giveaway!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 { color: #00ffcc; margin-bottom: 5px; }
+        p { font-size: 14px; color: #ddd; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 14px; margin-bottom: 5px; color: #00ffcc; }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus { outline: 2px solid #00ffcc; }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00ffcc;
+            color: #0f2027;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        button:hover { background: #00cca3; transform: scale(1.02); }
+        
+        .share-btn {
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .share-btn:hover { background: #1ebd58; transform: scale(1.02); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🦈 Shark Electronics</h2>
+    <p>Apnar bhaggo porikhya korun! Jitun akorshoniyo upohar! 🎁</p>
+    
+    <form id="giveawayForm">
+        <div class="form-group">
+            <label>Full Name (Naam):</label>
+            <input type="text" id="userName" placeholder="Apnar naam likhun" required>
+        </div>
+        <div class="form-group">
+            <label>Date of Birth (Jonmo Tarikh):</label>
+            <input type="date" id="userDob" required>
+        </div>
+        <div class="form-group">
+            <label>Phone Number (WhatsApp):</label>
+            <input type="tel" id="userPhone" placeholder="Mobile number likhun" pattern="[0-9]{10}" required>
+        </div>
+        <button type="submit">Submit & Join</button>
+    </form>
+
+    <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+    
+    <a href="#" id="whatsappShare" class="share-btn" target="_blank">➔ WhatsApp-e Bondhuder Share Korun</a>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    // Tumar original code bosiye dewa hoyeche
+    const firebaseConfig = {
+        apiKey: "AIzaSyAqHCO_8bikQf3_yGtLvWtvWFJVH9BwXm8",
+        authDomain: "shark-electronics-giveaway.firebaseapp.com",
+        databaseURL: "https://shark-electronics-giveaway-default-rtdb.firebaseio.com",
+        projectId: "shark-electronics-giveaway",
+        storageBucket: "shark-electronics-giveaway.firebasestorage.app",
+        messagingSenderId: "449219365131",
+        appId: "1:449219365131:web:746789ff9307619fa0fa0e",
+        measurementId: "G-WZB1TY435M"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    document.getElementById('giveawayForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('userName').value;
+        const dob = document.getElementById('userDob').value;
+        const phone = document.getElementById('userPhone').value;
+
+        database.ref('giveaway_entries/').push({
+            name: name,
+            dob: dob,
+            phone: phone,
+            timestamp: new Date().toLocaleString()
+        }).then(() => {
+            alert('🎉 Dhonnobad! Apnar entry safolbhabe joma hoyeche.');
+            document.getElementById('giveawayForm').reset();
+        }).catch((error) => {
+            alert('Error: ' + error.message);
+        });
+    });
+
+    const currentUrl = window.location.href; 
+    const shareMessage = `*Shark Electronics* er torf theke dewa hochhe bishal Gift Giveaway! 🎁\n\nTumi-o jitte paro akorshoniyo upohar. Nicher link-e click kore ekhuni form fill-up koro: \n👉 ${currentUrl}`;
+    
+    document.getElementById('whatsappShare').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareMessage)}`;
+</script>
+
+</body>
+</html>
