@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shark Admin Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; padding: 20px; margin:0;}
+        .wrapper { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #203a43; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #203a43; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .wa-link { color: #25D366; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h2>🦈 Shark Electronics - Admin Control</h2>
+    <p>User-der talika niche dewa holo:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sl No.</th>
+                <th>Name</th>
+                <th>DOB</th>
+                <th>Phone No.</th>
+                <th>Date & Time</th>
+            </tr>
+        </thead>
+        <tbody id="adminTableBody">
+            </tbody>
+    </table>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    // Tumar original code bosiye dewa hoyeche
+    const firebaseConfig = {
+        apiKey: "AIzaSyAqHCO_8bikQf3_yGtLvWtvWFJVH9BwXm8",
+        authDomain: "shark-electronics-giveaway.firebaseapp.com",
+        databaseURL: "https://shark-electronics-giveaway-default-rtdb.firebaseio.com",
+        projectId: "shark-electronics-giveaway",
+        storageBucket: "shark-electronics-giveaway.firebasestorage.app",
+        messagingSenderId: "449219365131",
+        appId: "1:449219365131:web:746789ff9307619fa0fa0e",
+        measurementId: "G-WZB1TY435M"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const tableBody = document.getElementById('adminTableBody');
+    
+    database.ref('giveaway_entries/').on('value', (snapshot) => {
+        tableBody.innerHTML = ""; 
+        let count = 1;
+        
+        snapshot.forEach((childSnapshot) => {
+            const data = childSnapshot.val();
+            const row = `<tr>
+                <td>${count++}</td>
+                <td><b>${data.name}</b></td>
+                <td>${data.dob}</td>
+                <td><a class="wa-link" href="https://wa.me/91${data.phone}" target="_blank">💬 ${data.phone}</a></td>
+                <td>${data.timestamp}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    });
+</script>
+
+</body>
+</html>
